@@ -30,6 +30,7 @@ def app(df, x, y):
     if x_test is not None and y_test is not None:
         st.write(f"Data testing: {len(y_test)}")
     
+    # Fungsi untuk mengevaluasi model dan menampilkan hasil
     def evaluate_model(model, x_train, y_train, x_test, y_test, model_name):
         train_accuracy = model.score(x_train, y_train) * 100
         st.write(f"Akurasi data training {model_name}: {train_accuracy:.2f}%")
@@ -46,7 +47,14 @@ def app(df, x, y):
             st.pyplot(fig)
             st.text(f"Classification Report for {model_name}:\n{classification_report(y_test, y_pred)}")
         else:
-            st.warning(f"Tidak ada data testing untuk {model_name}.")
+            st.warning(f"Tidak ada data testing untuk {model_name}. Menampilkan hasil untuk data training.")
+
+            fig, ax = plt.subplots()
+            y_pred_train = model.predict(x_train)
+            disp = ConfusionMatrixDisplay.from_estimator(model, x_train, y_train, display_labels=['0', '1', '2'], ax=ax)
+            disp.plot(cmap=plt.cm.Oranges)
+            st.pyplot(fig)
+            st.text(f"Classification Report for {model_name} (Training Data):\n{classification_report(y_train, y_pred_train)}")
 
     # Model SVM
     if st.checkbox("Plot Confusion Matrix (SVM)"):
