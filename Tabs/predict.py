@@ -2,7 +2,7 @@ import streamlit as st
 from web import predict, load_data
 
 def app(df, x, y):
-    st.title('Lungs Risk Prediction Models')
+    st.title('Prediksi Penyakit Kanker Paru')
 
     df, x, y = load_data()
 
